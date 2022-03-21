@@ -1,0 +1,41 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: tr7ae_savegame
+//   Authors: Raq
+//   Version: 1.0
+//   Purpose: Parsing Tomb Raider Legend/Anniversary's savegame format
+//  Category: 
+// File Mask: TRLSave/TRASave
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+struct {
+
+  int16 flags;
+  int16 saveVersion;
+  int sizeUsedInBlock;
+  uint16 percentComplete : 8;
+  uint16 mansionPuzzleComplete : 8;
+  int16 unlockedItemsCount;
+  int16 currentChapter;
+  int16 replayChapter;
+struct {
+  char checkPointUnitName[20];
+  int checkPointID;
+} CheckPoint;
+
+struct {
+  char checkPointUnitName[20];
+  int checkPointID;
+} replayCheckPoint;
+
+struct {
+  char checkPointUnitName[20];
+  int checkPointID;
+} mansionCheckPoint;
+
+  uint currentTime;
+  uint playTimeSec;
+
+} SaveGameHeader;

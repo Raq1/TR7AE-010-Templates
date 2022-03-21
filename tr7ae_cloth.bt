@@ -1,0 +1,187 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+typedef byte TYPE <read=TYPEread, write=TYPEwrite>;
+    string TYPEread(TYPE type) {
+        switch (type) {
+            case 0: 
+                return "General";
+            case 1: 
+                return "Empty";
+            case 2: 
+                return "Animation";
+            case 3: 
+                return "Pushbuffer_WC";
+            case 4: 
+                return "Pushbuffer";
+            case 5: 
+                return "Texture";
+            case 6: 
+                return "Sound";
+            case 7: 
+                return "DTPData";
+            case 8: 
+                return "Script";
+            case 9: 
+                return "ShaderLib";
+            case 10: 
+                return "CollisionMesh";
+            case 11:
+                return "Num_Section_Types";
+            default: 
+                return "Unknown";  
+        }
+    }
+    void TYPEwrite (TYPE &t, string str) {
+        t = Atoi(str);
+    }
+
+local uint64 i<hidden=true>;
+local uint64 v<hidden=true>;
+local uint SectionDataSize;
+
+struct {
+    uint32 magic; // 0x0
+    int32 size; // 0x4
+	        TYPE m_type;
+    byte _bf5; // 0x9
+    uint16 versionID; // 0xa
+    //uint32 packedData;
+    struct {
+        uint32 hasDebugInfo : 1;
+        uint32 resourceType : 7;
+        uint32 numRelocations : 24;        
+    } packedData;
+    uint32 id;
+    uint32 specMask;
+
+struct {
+    struct {
+        uint16 type : 3;
+        uint16 sectionIndexOrType : 13;
+    } typeAndSectionInfo;
+    int16 typeSpecific;
+    uint32 offset <fgcolor=cRed>;
+} Relocations[packedData.numRelocations];
+
+} SectionData <fgcolor=cGreen>;
+
+local uint32 numRelocations = SectionData.packedData.numRelocations;
+Printf("%d\n", numRelocations);
+	SectionDataSize = (numRelocations * 0x8) + 0x18;
+
+struct {
+    uint32 OffsetToStart;
+    uint32 LitterallyNothing;
+
+    FSeek(OffsetToStart + SectionDataSize);
+
+    float gravity;
+    float drag;
+    float windResponse;
+    uint16 flags;
+    uint16 positionPoint;
+    uint16 numPoints;
+    uint16 numMaps;
+    uint16 numDistRules;
+    uint16 numCapsuleRules;
+    uint16 numPlaneRules;
+    uint16 numHandRules;
+    uint16 numCollides;
+    uint16 numSphereCollides;
+    uint16 numSideCollides;
+    uint16 numPointMoveRules;
+    uint32 points;
+    uint32 maps;
+    uint32 distRules;
+    uint32 capsuleRules;
+    uint32 planeRules;
+    uint32 handRules;
+    uint32 collideRules;
+    uint32 sphereCollideRules;
+    uint32 sideCollideRules;
+    uint32 pointMoveRules;
+
+} ClothSetup <fgcolor=cLtBlue>;
+
+FSeek(ClothSetup.points + SectionDataSize);
+
+struct {
+
+  uint16 segment;
+  uint16 flags;
+  uint16 jointOrder;
+  uint16 upTo;
+  float x;
+  float y;
+  float z;
+
+} ClothPoint[ClothSetup.numPoints] <fgcolor=cLtGreen>;
+
+FSeek(ClothSetup.maps + SectionDataSize);
+
+struct {
+
+    uint16 segment;
+    uint16 flags;
+    char axis;
+    char jointOrder;
+    uint16 center;
+    uint16 points[4];
+    float xMin;
+    float xMax;
+    float yMin;
+    float yMax;
+    float zMin;
+    float zMax;
+
+} ClothJointMap[ClothSetup.numMaps] <fgcolor=cPurple>;
+
+FSeek(ClothSetup.distRules + SectionDataSize);
+
+struct {
+
+  uint16 point[2];
+  uint16 flags[2];
+  float minDist;
+  float maxDist;
+
+} distRule[ClothSetup.numDistRules] <fgcolor=cYellow>;
+
+FSeek(ClothSetup.capsuleRules + SectionDataSize);
+
+struct {
+
+  uint16 point[1];
+  uint16 flags[1];
+  int16 planeSegment[2];
+
+} FDPlaneRule[ClothSetup.numPlaneRules];
+
+
+FSeek(ClothSetup.sideCollideRules + SectionDataSize);
+
+
+struct {
+
+  uint16 point[2];
+
+} SideCollideRules[ClothSetup.numSideCollides];
+
+FSeek(ClothSetup.pointMoveRules + SectionDataSize);
+
+struct {
+
+  uint16 point;
+  uint16 count;
+
+} FDPointMoveRule[ClothSetup.numPointMoveRules];

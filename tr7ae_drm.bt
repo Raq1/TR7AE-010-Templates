@@ -1,0 +1,77 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: tr7ae_drm.bt
+//   Authors: Raq
+//   Version: 1.0
+//   Purpose: Parsing Tomb Raider Legend/Anniversary DRM files
+//  Category: Modding
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+typedef byte TYPE <read=TYPEread, write=TYPEwrite>;
+    string TYPEread(TYPE type) {
+        switch (type) {
+            case 0: 
+                return "General";
+            case 1: 
+                return "Empty";
+            case 2: 
+                return "Animation";
+            case 3: 
+                return "Pushbuffer_WC";
+            case 4: 
+                return "Pushbuffer";
+            case 5: 
+                return "Texture";
+            case 6: 
+                return "Sound";
+            case 7: 
+                return "DTPData";
+            case 8: 
+                return "Script";
+            case 9: 
+                return "ShaderLib";
+            case 10: 
+                return "CollisionMesh";
+            case 11:
+                return "Num_Section_Types";
+            default: 
+                return "Unknown";  
+        }
+    }
+    void TYPEwrite (TYPE &t, string str) {
+        t = Atoi(str);
+    }
+
+struct {
+
+  int versionNumber;
+  int numSections;
+
+} SectionList;
+
+struct {
+
+    int32 size;
+	        TYPE m_type;
+    byte pad;
+    uint16 versionID;
+    struct {
+
+        uint32 hasDebugInfo : 1;
+        uint32 resourceType : 7;
+        uint32 numRelocations : 24;
+
+    } packedData;
+    uint32 id;
+    uint32 specMask;
+
+} SectionInfo[SectionList.numSections] <fgcolor=cGreen>;
+
+struct {
+
+ReadInt(SectionInfo.size); 
+
+} SectionContent[SectionList.numSections] <fgcolor=cGreen>;

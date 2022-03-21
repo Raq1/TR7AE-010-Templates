@@ -1,0 +1,82 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+typedef byte TYPE <read=TYPEread, write=TYPEwrite>;
+    string TYPEread(TYPE type) {
+        switch (type) {
+            case 0: 
+                return "General";
+            case 1: 
+                return "Empty";
+            case 2: 
+                return "Animation";
+            case 3: 
+                return "Pushbuffer_WC";
+            case 4: 
+                return "Pushbuffer";
+            case 5: 
+                return "Texture";
+            case 6: 
+                return "Sound";
+            case 7: 
+                return "DTPData";
+            case 8: 
+                return "Script";
+            case 9: 
+                return "ShaderLib";
+            case 10: 
+                return "CollisionMesh";
+            case 11:
+                return "Num_Section_Types";
+            default: 
+                return "Unknown";  
+        }
+    }
+    void TYPEwrite (TYPE &t, string str) {
+        t = Atoi(str);
+    }
+
+local uint64 i<hidden=true>;
+local uint64 v<hidden=true>;
+
+struct {
+    uint32 magic; // 0x0
+    int32 size; // 0x4
+	        TYPE m_type;
+    byte _bf5; // 0x9
+    uint16 versionID; // 0xa
+    //uint32 packedData;
+    struct {
+        uint32 hasDebugInfo : 1;
+        uint32 resourceType : 7;
+        uint32 numRelocations : 24;        
+    } packedData;
+    uint32 id;
+    uint32 specMask;
+
+} SectionData <fgcolor=cGreen>;
+
+struct {
+
+  float mTransX;
+  float mTransY;
+  float mTransZ;
+  float mRotX;
+  float mRotY;
+  float mRotZ;
+  int16 mAnimID;
+  int16 mKeyCount;
+  int16 mTimePerKey;
+  char mSegmentCount;
+  char mSectionCount;
+
+} AnimFragment;
