@@ -1,5 +1,5 @@
 # TR7AE-010-Templates
-My 010 Templates for Tomb Raider Legend/Anniversary, made with help by alphaZomega and TheIndra.
+010 Templates for Tomb Raider Legend/Anniversary, made by me and TheIndra. I got a lot of help from alphaZomega who basically teached me how to make them.
 
 Not all the templates are finished (**anim, mesh_ps2, nextgen_mesh, objectdtpdata, savegame**)
 
