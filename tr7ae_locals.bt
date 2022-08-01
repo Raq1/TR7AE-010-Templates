@@ -1,0 +1,40 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: TheIndra
+//   Version: 1.0
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct LocalizationHeader
+{
+    int language;
+    int numStrings;
+};
+
+typedef struct
+{
+    uint offset;
+
+    // seek to string offset, read string and seek back
+    local int cursor = FTell();
+    FSeek(offset);
+    string str;
+
+    FSeek(cursor);
+} LocalizationString <optimize=false>;
+
+struct LocalizationFile
+{
+    LocalizationHeader header;
+
+    // localized strings
+    LocalizationString strings[header.numStrings];
+};
+
+LocalizationFile file;
